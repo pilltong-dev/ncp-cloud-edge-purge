@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const hmacSHA256 = require("crypto-js/hmac-sha256");
 const Base64 = require("crypto-js/enc-base64");
 
-function buildHeaders(path, method) {
+function buildNcpAuthorizationHeaders(path, method) {
     const ncpAccessKeyId = core.getInput('ncp-access-key-id');
     const ncpSecretKey = core.getInput('ncp-secret-key');
 
@@ -17,20 +17,20 @@ function buildHeaders(path, method) {
     }
 }
 
-function buildBody() {
+function buildPurgeRequestBodyJson() {
     const profileId = parseInt(core.getInput('edge-profile-id'));
     const edgeId = parseInt(core.getInput('edge-id'));
     const purgeType = core.getInput('purge-type');
     const purgeTarget = core.getInput('purge-target');
 
     if (purgeTarget) {
-        return {profileId, edgeId, purgeType, purgeTarget};
+        return JSON.stringify({profileId, edgeId, purgeType, purgeTarget});
     } else {
-        return {profileId, edgeId, purgeType};
+        return JSON.stringify({profileId, edgeId, purgeType});
     }
 }
 
-async function unwrapResponse(response) {
+async function unwrapPurgeResponse(response) {
     if (response.ok) {
         const data = await response.json();
         console.log('purge success. response data: ', data);
@@ -44,24 +44,14 @@ async function unwrapResponse(response) {
 async function purge() {
     const path = '/api/v1/purge';
     const method = 'POST';
-    const headers = buildHeaders(path, method);
-    const body = buildBody();
+    const headers = buildNcpAuthorizationHeaders(path, method);
+    const body = buildPurgeRequestBodyJson();
     console.log('purge request body: ', body)
 
     const response = await fetch('https://edge.apigw.ntruss.com' + path, {method, headers, body});
-    return await unwrapResponse(response);
+    return await unwrapPurgeResponse(response);
 }
 
-async function getProfiles() {
-    const path = '/api/v1/profiles';
-    const method = 'GET';
-    const headers = buildHeaders(path, method);
-
-    const response = await fetch('https://edge.apigw.ntruss.com' + path, {method, headers});
-    return await unwrapResponse(response);
-}
-
-getProfiles().then(data => console.log('get profiles success. ', data))
 purge()
     .then(purgeRequestIds => core.setOutput('purge_request_ids', purgeRequestIds))
     .catch(error => core.setFailed(error.message));
