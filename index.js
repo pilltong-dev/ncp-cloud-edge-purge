@@ -18,12 +18,12 @@ function buildHeaders(path, method) {
 }
 
 function buildBody() {
-    const profileId = core.getInput('edge-profile-id');
-    const edgeId = core.getInput('edge-id');
+    const profileId = parseInt(core.getInput('edge-profile-id'));
+    const edgeId = parseInt(core.getInput('edge-id'));
     const purgeType = core.getInput('purge-type');
     const purgeTarget = core.getInput('purge-target');
 
-    if (purgeTarget !== undefined) {
+    if (purgeTarget) {
         return {profileId, edgeId, purgeType, purgeTarget};
     } else {
         return {profileId, edgeId, purgeType};
