@@ -1,0 +1,21 @@
+name: 'NCP Cloud Edge Purge'
+description: 'Purge NCP Cloud Edge Cache'
+inputs:
+  ncp-access-key-id:
+    description: 'NCP Access Key ID'
+    required: true
+  ncp-secret-key:
+    description: 'NCP Secret Key'
+    required: true
+  edge-profile-id:
+    description: 'NCP Cloud Edge Profile ID'
+    required: true
+  edge-id:
+    description: 'NCP Cloud Edge ID'
+    required: true
+outputs:
+  purge_request_ids: # id of output
+    description: 'Purge Request IDs'
+runs:
+  using: 'node20'
+  main: 'index.js'
