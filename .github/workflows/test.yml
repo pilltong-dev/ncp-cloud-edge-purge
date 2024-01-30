@@ -6,7 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: pilltong-dev/ncp-cloud-edge-purge@v0.1
-        run: __test__/verify-no-unstaged-changes.sh
         with:
           ncp-access-key-id: '#########'
           ncp-secret-key: '#########'
