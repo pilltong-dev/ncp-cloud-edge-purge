@@ -30,14 +30,7 @@ function buildBody() {
     }
 }
 
-async function purge() {
-    const path = '/api/v1/purge';
-    const method = 'POST';
-    const headers = buildHeaders(path, method);
-    const body = buildBody();
-    console.log('purge request body: ', body)
-
-    const response = await fetch('https://edge.apigw.ntruss.com' + path, {method, headers, body});
+async function unwrapResponse(response) {
     if (response.ok) {
         const data = await response.json();
         console.log('purge success. response data: ', data);
@@ -46,6 +39,17 @@ async function purge() {
         const body = await response.text();
         throw new Error(`purge failed. response.status: ${response.status}, body: ${body}`);
     }
+}
+
+async function purge() {
+    const path = '/api/v1/purge';
+    const method = 'POST';
+    const headers = buildHeaders(path, method);
+    const body = buildBody();
+    console.log('purge request body: ', body)
+
+    const response = await fetch('https://edge.apigw.ntruss.com' + path, {method, headers, body});
+    return await unwrapResponse(response);
 }
 
 purge()
