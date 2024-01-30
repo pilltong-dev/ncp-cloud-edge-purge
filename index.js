@@ -1,5 +1,4 @@
 const core = require('@actions/core');
-const github = require('@actions/github');
 const hmacSHA256 = require("crypto-js/hmac-sha256");
 const Base64 = require("crypto-js/enc-base64");
 
@@ -22,8 +21,13 @@ function buildBody() {
     const profileId = core.getInput('edge-profile-id');
     const edgeId = core.getInput('edge-id');
     const purgeType = core.getInput('purge-type');
+    const purgeTarget = core.getInput('purge-target');
 
-    return {profileId, edgeId, purgeType};
+    if (purgeTarget !== undefined) {
+        return {profileId, edgeId, purgeType, purgeTarget};
+    } else {
+        return {profileId, edgeId, purgeType};
+    }
 }
 
 async function purge() {

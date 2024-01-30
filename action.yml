@@ -13,6 +13,13 @@ inputs:
   edge-id:
     description: 'NCP Cloud Edge ID'
     required: true
+  purge-type:
+    description: 'Purge Type(ex. ALL, DIRECTORY, PATTERN, URL)'
+    required: true
+    default: 'ALL'
+  purge-target:
+    description: 'Purge Target (ref. https://api.ncloud-docs.com/docs/en/purge-request)'
+    required: false
 outputs:
   purge_request_ids: # id of output
     description: 'Purge Request IDs'

@@ -1,13 +1,40 @@
 name: ncp-cloud-edge-purge-test
 on:
   workflow_dispatch:
+    inputs:
+      ncp_access_key_id:
+        description: 'NCP Access Key ID'
+        required: true
+      ncp_secret_key:
+        description: 'NCP Secret Key'
+        required: true
+      edge_profile_id:
+        description: 'NCP Cloud Edge Profile ID'
+        required: true
+      edge_id:
+        description: 'NCP Cloud Edge ID'
+        required: true
+      purge_type:
+        description: 'Purge Type(ex. ALL, DIRECTORY, PATTERN, URL)'
+        required: true
+        default: 'ALL'
+        options:
+          - 'ALL'
+          - 'DIRECTORY'
+          - 'PATTERN'
+          - 'URL'
+      purge_target:
+        description: 'Purge Target (ref. https://api.ncloud-docs.com/docs/en/purge-request)'
+        required: false
 jobs:
   purge-test:
     runs-on: ubuntu-latest
     steps:
       - uses: pilltong-dev/ncp-cloud-edge-purge@v0.1
         with:
-          ncp-access-key-id: '#########'
-          ncp-secret-key: '#########'
-          edge-profile-id: 'my-edge-profile-id'
-          edge-id: 'my-edge-id'
+          ncp-access-key-id: ${{ github.event.inputs.ncp_access_key_id }}
+          ncp-secret-key: ${{ github.event.inputs.ncp_secret_key }}
+          edge-profile-id: ${{ github.event.inputs.edge_profile_id }}
+          edge-id: ${{ github.event.inputs.edge_id }}
+          purge-type: ${{ github.event.inputs.purge_type }}
+          purge-target: ${{ github.event.inputs.purge_target }}
