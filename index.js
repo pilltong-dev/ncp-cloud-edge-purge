@@ -5,7 +5,7 @@ const Base64 = require("crypto-js/enc-base64");
 
 const CLOUD_EDGE_API_BASE_URL = "https://edge.apigw.ntruss.com"
 
-try {
+async function purge() {
     const ncpAccessKeyId = core.getInput('ncp-access-key-id');
     const ncpSecretKey = core.getInput('ncp-secret-key');
     const edgeProfileId = core.getInput('edge-profile-id');
@@ -38,7 +38,9 @@ try {
     console.log('edge-id: ', edgeId);
 
     const purgeRequestIds = [1, 2, 3, 4]; // TODO: Call NCP API to purge cache
-    core.setOutput('purge_request_ids', purgeRequestIds);
-} catch (error) {
-    core.setFailed(error.message);
+    return purgeRequestIds
 }
+
+purge()
+    .then(purgeRequestIds => core.setOutput('purge_request_ids', purgeRequestIds))
+    .catch(error => core.setFailed(error.message));
