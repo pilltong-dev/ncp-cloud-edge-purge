@@ -3,8 +3,6 @@ const github = require('@actions/github');
 const hmacSHA256 = require("crypto-js/hmac-sha256");
 const Base64 = require("crypto-js/enc-base64");
 
-const CLOUD_EDGE_API_BASE_URL = "https://edge.apigw.ntruss.com"
-
 function buildHeaders(path, method) {
     const ncpAccessKeyId = core.getInput('ncp-access-key-id');
     const ncpSecretKey = core.getInput('ncp-secret-key');
@@ -20,21 +18,23 @@ function buildHeaders(path, method) {
     }
 }
 
-async function purge() {
-    const edgeProfileId = core.getInput('edge-profile-id');
+function buildBody() {
+    const profileId = core.getInput('edge-profile-id');
     const edgeId = core.getInput('edge-id');
-    const path = '/api/v1/profiles';
-    const method = 'GET';
+    const purgeType = core.getInput('purge-type');
 
-    console.log('edge-profile-id: ', edgeProfileId);
-    console.log('edge-id: ', edgeId);
+    return {profileId, edgeId, purgeType};
+}
 
-    // build signature
+async function purge() {
+    const path = '/api/v1/purge';
+    const method = 'POST';
     const headers = buildHeaders(path, method);
-    const response = await fetch(CLOUD_EDGE_API_BASE_URL + path, {headers, method});
-    const data = await response.json();
-    console.log('data: ', data);
+    const body = buildBody();
 
+    const response = await fetch('https://edge.apigw.ntruss.com' + path, {method, headers, body});
+    const data = await response.json();
+    console.log('purge api response data: ', data);
     return data.result // array of purgeRequestId
 }
 
