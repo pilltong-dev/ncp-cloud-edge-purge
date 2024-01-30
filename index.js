@@ -5,7 +5,7 @@ const Base64 = require("crypto-js/enc-base64");
 
 const CLOUD_EDGE_API_BASE_URL = "https://edge.apigw.ntruss.com"
 
-function buildHeaders(path, method): Record<string, string> {
+function buildHeaders(path, method) {
     const ncpAccessKeyId = core.getInput('ncp-access-key-id');
     const ncpSecretKey = core.getInput('ncp-secret-key');
 
@@ -20,7 +20,7 @@ function buildHeaders(path, method): Record<string, string> {
     }
 }
 
-async function purge(): Promise<Array<number>> {
+async function purge() {
     const edgeProfileId = core.getInput('edge-profile-id');
     const edgeId = core.getInput('edge-id');
     const path = '/api/v1/profiles';
@@ -35,7 +35,7 @@ async function purge(): Promise<Array<number>> {
     const data = await response.json();
     console.log('data: ', data);
 
-    return Array<number>(data.result)
+    return data.result // array of purgeRequestId
 }
 
 purge()
