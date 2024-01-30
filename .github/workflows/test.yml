@@ -1,0 +1,15 @@
+name: ncp-cloud-edge-purge
+on:
+  workflow_dispatch:
+jobs:
+  purge-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: pilltong-dev/ncp-cloud-edge-purge@v0.1
+        run: __test__/verify-no-unstaged-changes.sh
+        with:
+          ncp-access-key-id: '#########'
+          ncp-secret-key: '#########'
+          ncp-region: 'my-ncp-region'
+          edge-profile-id: 'my-edge-profile-id'
+          edge-id: 'my-edge-id'
