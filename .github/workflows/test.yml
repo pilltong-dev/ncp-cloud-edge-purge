@@ -30,7 +30,7 @@ jobs:
   purge-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: pilltong-dev/ncp-cloud-edge-purge@v0.1
+      - uses: pilltong-dev/ncp-cloud-edge-purge@v1
         with:
           ncp-access-key-id: ${{ github.event.inputs.ncp_access_key_id }}
           ncp-secret-key: ${{ github.event.inputs.ncp_secret_key }}

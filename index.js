@@ -37,9 +37,14 @@ async function purge() {
     const body = buildBody();
 
     const response = await fetch('https://edge.apigw.ntruss.com' + path, {method, headers, body});
-    const data = await response.json();
-    console.log('purge api response data: ', data);
-    return data.result // array of purgeRequestId
+    if (response.ok) {
+        const data = await response.json();
+        console.log('purge success. response data: ', data);
+        return data.result // array of purgeRequestId
+    } else {
+        const body = await response.text();
+        throw new Error(`purge failed. response.status: ${response.status}, body: ${body}`);
+    }
 }
 
 purge()
