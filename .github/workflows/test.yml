@@ -1,4 +1,4 @@
-name: ncp-cloud-edge-purge
+name: ncp-cloud-edge-purge-test
 on:
   workflow_dispatch:
 jobs:
@@ -9,6 +9,5 @@ jobs:
         with:
           ncp-access-key-id: '#########'
           ncp-secret-key: '#########'
-          ncp-region: 'my-ncp-region'
           edge-profile-id: 'my-edge-profile-id'
           edge-id: 'my-edge-id'
