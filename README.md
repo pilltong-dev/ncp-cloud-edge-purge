@@ -26,7 +26,7 @@ This action purge cache data of NCP Cloud Edge.
 
 | Value       | Description                       | purgeTarget restrictions                              | Examples                                            |
 |-------------|-----------------------------------|-------------------------------------------------------|-----------------------------------------------------|
-| `ALL`       | Purge all contents                | Must be omitted                                       | null                                                |
+| `ALL`       | (**DEFAULT**) Purge all contents  | Must be omitted                                       | null                                                |
 | `DIRECTORY` | Purge by directory                | Starts with '/' <br> Ends with '/*'                   | /* <br> /src/* <br> /src/images/*                   |
 | `PATTERN`   | Purge content by extension        | Starts with '/' <br> Ends with extension like '*.abc' | /*.jpg <br> /static/*.png <br> /static/images/*.css |
 | `URL`       | Purge designated content with URL | Starts with '/' <br> '*' cannot be used               | /src/css/main.css?version=20221124                  |
