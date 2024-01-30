@@ -52,6 +52,16 @@ async function purge() {
     return await unwrapResponse(response);
 }
 
+async function getProfiles() {
+    const path = '/api/v1/profiles';
+    const method = 'GET';
+    const headers = buildHeaders(path, method);
+
+    const response = await fetch('https://edge.apigw.ntruss.com' + path, {method, headers});
+    return await unwrapResponse(response);
+}
+
+getProfiles().then(data => console.log('get profiles success. ', data))
 purge()
     .then(purgeRequestIds => core.setOutput('purge_request_ids', purgeRequestIds))
     .catch(error => core.setFailed(error.message));
