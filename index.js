@@ -35,6 +35,7 @@ async function purge() {
     const method = 'POST';
     const headers = buildHeaders(path, method);
     const body = buildBody();
+    console.log('purge request body: ', body)
 
     const response = await fetch('https://edge.apigw.ntruss.com' + path, {method, headers, body});
     if (response.ok) {
